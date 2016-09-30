@@ -1,0 +1,6 @@
+{
+	"token": "bot_token_goes_here",
+	"name": "name_of_the_bot_for_console_printing",
+	"prefix": "/",
+	"admin": "00000000000000000",
+}

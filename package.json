@@ -1,0 +1,20 @@
+{
+	"name": "Zajrikbot",
+	"version": "1.6.2",
+	"description": "A fairly simple Discord bot that can help with various Warframe related things. More features to come.",
+	"author": "Zackary Campbell <zajrik@gmail.com>",
+	"scripts": {
+		"main": "node bot/main",
+		"update": "git pull"
+	},
+	"main": "bot/main.js",
+	"dependencies": {
+		"discord.js": "9.2.0",
+		"node-json-db": "*",
+		"columnify": "*",
+		"request": "*",
+		"colors": "*",
+		"util": "*"
+	},
+	"private": true
+}
