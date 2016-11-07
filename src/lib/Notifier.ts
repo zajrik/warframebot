@@ -85,7 +85,7 @@ export default class Notifier
 	private _fetchUsers(): Collection<string, RegisteredUser>
 	{
 		const fetchedUsers: Collection<string, RegisteredUser> = new Collection<string, RegisteredUser>();
-		let users: { [id: string]: SavableUser } = this._storage.getItem('users') || {};
+		const users: { [id: string]: SavableUser } = this._storage.getItem('users') || {};
 		for (let id of Object.keys(users))
 		{
 			const user: SavableUser = users[id];
@@ -119,13 +119,16 @@ export default class Notifier
 	 */
 	private async _alertNotify(user: User | string, alert: Alert): Promise<Message>
 	{
-		// TODO: Build the alert string from the Alert object
 		const fetchedUser: User = await this._bot.fetchUser(<string> user);
 		const registeredUser: RegisteredUser = this.users.get((<User> user).id || <string> user);
 		registeredUser.received[alert.id] = alert.expiry;
 		this.users.set(registeredUser.id, registeredUser);
 		this._saveUsers();
-		return <Message> await fetchedUser.sendMessage('foo');
+		const output: string = `\`\`\`css\n`
+			+ `An alert with a reward you are tracking is available.\n\`\`\`\`\`\`xl\n`
+			+ `Mission: ${alert.node} (${alert.region}) | ${alert.mission}${alert.desc}\n`
+			+ `Rewards: ${alert.rewards.credits} - ${alert.rewards.item}\n\`\`\``;
+		return <Message> await fetchedUser.sendMessage(output);
 	}
 
 	/**
@@ -134,13 +137,17 @@ export default class Notifier
 	 */
 	private async _invasionNotify(user: User | string, invasion: Invasion): Promise<Message>
 	{
-		// TODO: Build the invasion string from the Invasion object
 		const fetchedUser: User = await this._bot.fetchUser(<string> user);
 		const registeredUser: RegisteredUser = this.users.get((<User> user).id || <string> user);
 		registeredUser.received[invasion.id] = Date.now() + (7 * 24) * 1000 * 60 * 60;
 		this.users.set(registeredUser.id, registeredUser);
 		this._saveUsers();
-		return <Message> await fetchedUser.sendMessage('bar');
+		const output: string = `An invasion with a reward you are tracking is available.\`\`\`\`\`\`xl\n`
+			+ `Node: ${invasion.node} (${invasion.region})\n`
+			+ `Invading: ${invasion.invading.faction} ${invasion.invading.type} | ${invasion.invading.reward}\n`
+			+ `Defending: ${invasion.defending.faction} ${invasion.defending.type} | ${invasion.defending.reward}\n`
+			+ `${invasion.eta}\n\`\`\``;
+		return <Message> await fetchedUser.sendMessage(output);
 	}
 
 	/**
