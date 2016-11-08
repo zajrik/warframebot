@@ -230,6 +230,6 @@ export default class Notifier
 	 */
 	public getKeywords(user: User): string[]
 	{
-		return this.users.get(user.id).keywords || [];
+		return this.users.has(user.id) ? this.users.get(user.id).keywords : [];
 	}
 }
