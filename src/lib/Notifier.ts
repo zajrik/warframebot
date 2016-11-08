@@ -33,7 +33,7 @@ export class RegisteredUser
 	}
 
 	/**
-	 * Return this users data in a format able to be saved
+	 * Return this user's data in a format able to be saved
 	 * to persistent storage
 	 */
 	public toSavable(): SavableUser
@@ -203,7 +203,7 @@ export default class Notifier
 	public subscribe(user: User, keyword: string): void
 	{
 		let fetchedUser: RegisteredUser = this.users.get(user.id);
-		if (!fetchedUser) fetchedUser = new RegisteredUser(user.id, [keyword], {});
+		if (!fetchedUser) fetchedUser = new RegisteredUser(user.id, [keyword]);
 		else fetchedUser.keywords.push(keyword);
 		this.users.set(user.id, fetchedUser);
 		this._saveUsers();
