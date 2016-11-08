@@ -65,8 +65,15 @@ export default class EventLoader
 	 */
 	private async _loadAlerts(): Promise<any>
 	{
-		const data: string = await request(Constants.endpoints.warframe.alerts);
-		if (!data) return console.log('Failed to fetch alerts.');
+		let data: string;
+		try
+		{
+			data = await request(Constants.endpoints.warframe.alerts);
+		}
+		catch (err)
+		{
+			return console.error('Failed to fetch alerts.');
+		}
 
 		const alerts: string[][] = data
 			.split('\n')
@@ -77,8 +84,8 @@ export default class EventLoader
 		const fetchedAlerts: Collection<string, Alert> = new Collection<string, Alert>();
 		for (let alert of alerts)
 		{
-			let begin: number = parseInt(alert[7]) * 1000;
-			let expiry: number = parseInt(alert[8]) * 1000;
+			const begin: number = parseInt(alert[7]) * 1000;
+			const expiry: number = parseInt(alert[8]) * 1000;
 			if (begin > Time.now()) continue;
 			if (Time.difference(expiry, Time.now()).ms < 1) continue;
 
@@ -108,8 +115,15 @@ export default class EventLoader
 	 */
 	private async _loadInvasions(): Promise<any>
 	{
-		const data: string = await request(Constants.endpoints.warframe.invasions);
-		if (!data) return console.log('Failed to fetch invasions.');
+		let data: string;
+		try
+		{
+			data = await request(Constants.endpoints.warframe.invasions);
+		}
+		catch (err)
+		{
+			return console.error('Failed to fetch invasions.');
+		}
 
 		const invasions: string[][] = data.split('\n').filter(a => a.includes('|')).map(a => a.split('|'));
 		const fetchedInvasions: Collection<string, Invasion> = new Collection<string, Invasion>();
