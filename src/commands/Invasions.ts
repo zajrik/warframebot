@@ -37,7 +37,6 @@ export default class Invasions extends Command
 
 		let updated: string = (<WfBot> this.bot).eventLoader.invasionsFetchedAt.format('h:mm:ss a');
 		let passed: string = (<WfBot> this.bot).eventLoader.invasionsFetchedAt.fromNow();
-		message.channel.sendMessage(output.join(''));
-		message.channel.sendMessage(`_Last updated at ${updated} (${passed})_`);
+		message.channel.sendMessage(`${output.join('')}_Last updated at ${updated} (${passed})_`);
 	}
 }

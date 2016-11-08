@@ -42,7 +42,7 @@ export default class Alerts extends Command
 
 		let updated: string = (<WfBot> this.bot).eventLoader.alertsFetchedAt.format('h:mm:ss a');
 		let passed: string = (<WfBot> this.bot).eventLoader.alertsFetchedAt.fromNow();
-		message.channel.sendCode('ini', columns);
-		message.channel.sendMessage(`_Last updated at ${updated} (${passed})_`);
+		message.channel.sendMessage(`\`\`\`ini\n${columns}\n\`\`\``
+			+ `_Last updated at ${updated} (${passed})_`);
 	}
 }
