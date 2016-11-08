@@ -127,7 +127,8 @@ export default class Notifier
 		const output: string = `\`\`\`css\n`
 			+ `An alert with a reward you are tracking is available.\n\`\`\`\`\`\`xl\n`
 			+ `Mission: ${alert.node} (${alert.region}) | ${alert.mission}${alert.desc}\n`
-			+ `Rewards: ${alert.rewards.credits} - ${alert.rewards.item}\n\`\`\``;
+			+ `Rewards: ${alert.rewards.credits} - ${alert.rewards.item}\n`
+			+ `Expires: ${Time.difference(alert.expiry, Time.now()).toSimplifiedString()}\n\`\`\``;
 		return <Message> await fetchedUser.sendMessage(output);
 	}
 
@@ -142,7 +143,7 @@ export default class Notifier
 		registeredUser.received[invasion.id] = Date.now() + (7 * 24) * 1000 * 60 * 60;
 		this.users.set(registeredUser.id, registeredUser);
 		this._saveUsers();
-		const output: string = `An invasion with a reward you are tracking is available.\`\`\`\`\`\`xl\n`
+		const output: string = `\`\`\`css\nAn invasion with a reward you are tracking is available.\`\`\`\`\`\`xl\n`
 			+ `Node: ${invasion.node} (${invasion.region})\n`
 			+ `Invading: ${invasion.invading.faction} ${invasion.invading.type} | ${invasion.invading.reward}\n`
 			+ `Defending: ${invasion.defending.faction} ${invasion.defending.type} | ${invasion.defending.reward}\n`
@@ -158,20 +159,20 @@ export default class Notifier
 	 */
 	public async checkEvents(): Promise<any>
 	{
-		for (let user of this.users.values())
+		for (let user of this.users.array())
 		{
 			const alertMatches: Collection<string, Alert> = this._bot.eventLoader.alerts
 				.filter((a: Alert) => user.keywords
 					.filter(b => this._normalize(a.rewards.item)
 						.includes(this._normalize(b)) && !user.received[a.id]).length > 0);
-			for (let match of alertMatches.values()) await this._alertNotify(user.id, match);
+			for (let match of alertMatches.array()) await this._alertNotify(user.id, match);
 
 			const invasionMatches: Collection<string, Invasion> = this._bot.eventLoader.invasions
 				.filter((a: Invasion) => user.keywords
 					.filter(b => (this._normalize(a.invading.reward).includes(this._normalize(b))
 						|| this._normalize(a.defending.reward).includes(this._normalize(b)))
 						&& !user.received[a.id]).length > 0);
-			for (let match of invasionMatches.values()) await this._invasionNotify(user.id, match);
+			for (let match of invasionMatches.array()) await this._invasionNotify(user.id, match);
 		}
 	}
 
