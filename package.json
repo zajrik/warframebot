@@ -3,8 +3,10 @@
   "version": "2.0.0",
   "description": "A fairly simple Discord bot that can help with various Warframe related things.",
   "author": "Zackary Campbell <zajrik@gmail.com>",
-  "scripts": {},
   "main": "bin/bot.js",
+  "scripts": {
+    "lint": "tslint './src/**/*.ts'"
+  },
   "dependencies": {
     "columnify": "^1.5.4",
     "moment": "^2.15.2",
