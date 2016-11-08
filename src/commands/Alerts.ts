@@ -24,7 +24,7 @@ export default class Alerts extends Command
 	{
 		const output: any[] = (<WfBot> this.bot).eventLoader.alerts.map((alert: Alert) =>
 		{
-			let expiry: string = Time.difference(alert.expiry, Time.now()).toSimplifiedString();
+			const expiry: string = Time.difference(alert.expiry, Time.now()).toSimplifiedString();
 			return {
 				mission: `${alert.node} (${alert.region})`,
 					type: alert.mission + alert.desc,
