@@ -1,7 +1,6 @@
 'use strict';
 import { Bot, Command } from 'yamdbf';
 import { User, Message } from 'discord.js';
-import { RegisteredUser } from '../lib/Notifier';
 import Notifier from '../lib/Notifier';
 import WfBot from '../lib/WfBot';
 
