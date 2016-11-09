@@ -6,6 +6,10 @@ import ItemLoader from './ItemLoader';
 import EventLoader from './EventLoader';
 import Notifier from './Notifier';
 
+/**
+ * Extend Bot class to allow for extra properties and
+ * necessary method extensions 
+ */
 export default class WfBot extends Bot
 {
 	public timers: TimerCollection<string, Timer>;
@@ -25,5 +29,14 @@ export default class WfBot extends Bot
 		this.timers.add(new Timer(this, 'items', 5 * 60 * 60, async () => this.itemLoader.reloadItems()));
 		this.timers.add(new Timer(this, 'notify', 60, async () => this.notifier.checkEvents()));
 		this.timers.add(new Timer(this, 'prune', 5 * 60, async () => this.notifier.checkExpired()));
+	}
+
+	/**
+	 * Destroy all timers before calling super destroy()
+	 */
+	public destroy(): Promise<void>
+	{
+		this.timers.destroyAll();
+		return super.destroy();
 	}
 }

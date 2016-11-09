@@ -23,4 +23,12 @@ export default class TimerCollection<key, value> extends Collection<string, Time
 		if (super.has(timer.name)) throw new Error(`Timer "${timer.name}" already exists in this collection.`);
 		return super.set(timer.name, timer);
 	}
+
+	/**
+	 * Destroy all timers, to be called by <Client>.destroy()
+	 */
+	public destroyAll(): void
+	{
+		super.forEach(timer => timer.destroy());
+	}
 }
