@@ -114,7 +114,7 @@ export default class Notifier
 	}
 
 	/**
-	 * Notify a user of an alert with a reward containing
+	 * Notify a user of an alert with a reward including
 	 * a subscribed keyword
 	 */
 	private async _alertNotify(user: User | string, alert: Alert): Promise<Message>
@@ -133,7 +133,7 @@ export default class Notifier
 	}
 
 	/**
-	 * Notify a user of an invasion with a reward containing
+	 * Notify a user of an invasion with a reward including
 	 * a subscribed keyword
 	 */
 	private async _invasionNotify(user: User | string, invasion: Invasion): Promise<Message>
@@ -152,10 +152,10 @@ export default class Notifier
 	}
 
 	/**
-	 * Iterate users and their keywords and see if any alerts
-	 * or invasions have any reward keyword matches and notify
-	 * them of any matches, ignoring any that the user has already
-	 * been notified of
+	 * Iterate users, filter events based on reward keyword
+	 * matches and whether or not the user has been notified
+	 * of that event already, and notify the user of any
+	 * resulting applicable events.
 	 */
 	public async checkEvents(): Promise<any>
 	{
@@ -196,9 +196,9 @@ export default class Notifier
 	}
 
 	/**
-	 * Add a keyword to a users keywords. Be sure to check if
+	 * Add a keyword to a user's keywords. Be sure to check if
 	 * the keyword already exists before subscribing so that
-	 * an error can be provided
+	 * an error message can be sent to the calling channel
 	 */
 	public subscribe(user: User, keyword: string): void
 	{
@@ -213,7 +213,7 @@ export default class Notifier
 	 * Remove a keyword from a users' subscribed keywords, removing
 	 * the user from the collection cache if there are none remaining.
 	 * Be sure to check if the keyword exists before unsubscribing
-	 * so that an error can be provided
+	 * so that an error message can be sent to the calling channel
 	 */
 	public unsubscribe(user: User, keyword: string): void
 	{
