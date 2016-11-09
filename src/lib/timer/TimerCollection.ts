@@ -29,7 +29,7 @@ export default class TimerCollection<key, value> extends Collection<string, Time
 	 */
 	public set(key: string, value: Timer): this
 	{
-		if (!(value instanceof Timer)) throw new Error('TimerCollection only supports Timer values');
+		if (!(value instanceof Timer)) throw new Error('TimerCollection only accepts Timer values');
 		return super.set(key, value);
 	}
 
@@ -38,6 +38,6 @@ export default class TimerCollection<key, value> extends Collection<string, Time
 	 */
 	public destroyAll(): void
 	{
-		super.forEach(timer => timer.destroy());
+		super.forEach((timer: Timer) => timer.destroy());
 	}
 }

@@ -20,5 +20,6 @@ const bot: WfBot = new WfBot({
 })
 .removeDefaultSetting('disabledGroups')
 .setDefaultSetting('prefix', '/')
-.start()
-.on('ready', () => console.log('\u0007'));
+.start();
+
+bot.on('ready', () => console.log('\u0007'));
