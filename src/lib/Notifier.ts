@@ -67,7 +67,7 @@ export default class Notifier
 	{
 		this._bot = bot;
 		this._storage = new LocalStorage('storage/notifier');
-		this.users = this._fetchUsers();
+		this._loadUsers();
 	}
 
 	/**
@@ -117,12 +117,11 @@ export default class Notifier
 	 * Notify a user of an alert with a reward including
 	 * a subscribed keyword
 	 */
-	private async _alertNotify(user: User | string, alert: Alert): Promise<Message>
+	private async _alertNotify(user: RegisteredUser, alert: Alert): Promise<Message>
 	{
-		const fetchedUser: User = await this._bot.fetchUser(<string> user);
-		const registeredUser: RegisteredUser = this.users.get((<User> user).id || <string> user);
-		registeredUser.received[alert.id] = alert.expiry;
-		this.users.set(registeredUser.id, registeredUser);
+		const fetchedUser: User = await this._bot.fetchUser(user.id);
+		user.received[alert.id] = alert.expiry;
+		this.users.set(user.id, user);
 		this._saveUsers();
 		const output: string = `\`\`\`css\n`
 			+ `An alert with a reward you are tracking is available.\n\`\`\`\`\`\`xl\n`
@@ -136,12 +135,11 @@ export default class Notifier
 	 * Notify a user of an invasion with a reward including
 	 * a subscribed keyword
 	 */
-	private async _invasionNotify(user: User | string, invasion: Invasion): Promise<Message>
+	private async _invasionNotify(user: RegisteredUser, invasion: Invasion): Promise<Message>
 	{
-		const fetchedUser: User = await this._bot.fetchUser(<string> user);
-		const registeredUser: RegisteredUser = this.users.get((<User> user).id || <string> user);
-		registeredUser.received[invasion.id] = Date.now() + (7 * 24) * 1000 * 60 * 60;
-		this.users.set(registeredUser.id, registeredUser);
+		const fetchedUser: User = await this._bot.fetchUser(user.id);
+		user.received[invasion.id] = Date.now() + (7 * 24) * 1000 * 60 * 60;
+		this.users.set(user.id, user);
 		this._saveUsers();
 		const output: string = `\`\`\`css\nAn invasion with a reward you are tracking is available.\`\`\`\`\`\`xl\n`
 			+ `Node: ${invasion.node} (${invasion.region})\n`
@@ -165,14 +163,14 @@ export default class Notifier
 				.filter((a: Alert) => user.keywords
 					.filter(b => this._normalize(a.rewards.item)
 						.includes(this._normalize(b)) && !user.received[a.id]).length > 0);
-			for (let match of alertMatches.array()) await this._alertNotify(user.id, match);
+			for (let alert of alertMatches.array()) await this._alertNotify(user, alert);
 
 			const invasionMatches: Collection<string, Invasion> = this._bot.eventLoader.invasions
 				.filter((a: Invasion) => user.keywords
 					.filter(b => (this._normalize(a.invading.reward).includes(this._normalize(b))
 						|| this._normalize(a.defending.reward).includes(this._normalize(b)))
 						&& !user.received[a.id]).length > 0);
-			for (let match of invasionMatches.array()) await this._invasionNotify(user.id, match);
+			for (let invasion of invasionMatches.array()) await this._invasionNotify(user, invasion);
 		}
 	}
 
