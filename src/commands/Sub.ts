@@ -44,6 +44,6 @@ If you are uncertain of the actual name of an item, try viewing it in game or do
 
 		notifier.subscribe(message.author, keyword);
 		message.channel.sendMessage(
-			`Ok, I'll notify you of alert/invasions rewards containing '${keyword}'.`);
+			`Ok, I'll notify you of alert/invasion rewards containing '${keyword}'.`);
 	}
 }

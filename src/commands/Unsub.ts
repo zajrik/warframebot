@@ -38,6 +38,6 @@ You can get a list of your currently subscribed keywords at any time using the "
 
 		notifier.unsubscribe(message.author, keyword);
 		message.channel.sendMessage(
-			`Ok, I'll no longer notify you of alert/invasions rewards containing '${keyword}'.`);
+			`Ok, I'll no longer notify you of alert/invasion rewards containing '${keyword}'.`);
 	}
 }
