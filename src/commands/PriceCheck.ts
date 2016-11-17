@@ -1,7 +1,7 @@
 'use strict';
 import { Bot, Command } from 'yamdbf';
 import { User, Message, Collection } from 'discord.js';
-import { Listing } from '../lib/ItemLoader';
+import { Listing, Item } from '../lib/ItemLoader';
 import WfBot from '../lib/WfBot';
 
 export default class PriceCheck extends Command
@@ -27,13 +27,14 @@ export default class PriceCheck extends Command
 		if ((<any> listings.first()).error)
 			return outMessage.edit((<any> listings.first()).error);
 
+		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
 		const prices: number[] = listings.map(a => a.price);
 		const average: number = prices.reduce((a, b) => a + b) / listings.size;
 		const max: number = prices.reduce((a, b) => Math.max(a, b));
 		const min: number = prices.reduce((a, b) => Math.min(a, b));
 
 		return outMessage.editCode('ini', ``
-			+ `Average price for [${name}] is ${average.toFixed(2)}p.\n`
+			+ `Average price for [${item.name}] is ${average.toFixed(2)}p.\n`
 			+ `Lowest price is ${min}p.\n`
 			+ `Highest price is ${max}p.`);
 	}

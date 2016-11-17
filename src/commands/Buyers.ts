@@ -48,7 +48,7 @@ export default class Buyers extends Command
 		});
 
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
-		const titleString: string = `online buyers for [${name}] ${(item.type === 'Mod') ? 'rank 0' : ''}`;
+		const titleString: string = `online buyers for [${item.name}] ${(item.type === 'Mod') ? 'rank 0' : ''}`;
 		outMessage.editCode('ini',
 			`${titleString}\n${'-'.repeat(Math.max(31, titleString.length))}\n${columns}`);
 	}
