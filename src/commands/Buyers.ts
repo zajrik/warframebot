@@ -3,7 +3,6 @@ import { Bot, Command } from 'yamdbf';
 import { User, Message, Collection } from 'discord.js';
 import { Listing, Item } from '../lib/ItemLoader';
 import WfBot from '../lib/WfBot';
-import * as columnify from 'columnify';
 
 export default class Buyers extends Command
 {

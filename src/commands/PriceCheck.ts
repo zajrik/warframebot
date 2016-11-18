@@ -28,7 +28,7 @@ export default class PriceCheck extends Command
 			return outMessage.edit((<any> listings.first()).error);
 
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
-		const prices: number[] = listings.map(a => a.price);
+		const prices: number[] = listings.map(a => a.price).sort((a, b) => a - b);
 		const average: number = prices.reduce((a, b) => a + b) / listings.size;
 		const max: number = prices.reduce((a, b) => Math.max(a, b));
 		const min: number = prices.reduce((a, b) => Math.min(a, b));
@@ -46,13 +46,13 @@ export default class PriceCheck extends Command
 					inline: true
 				},
 				{
-					name: 'Lowest price',
-					value: `${min}p`,
+					name: 'Lowest prices',
+					value: `${prices[0]}p\n${prices[1]}p\n${prices[2]}p`,
 					inline: true
 				},
 				{
-					name: 'Highest price',
-					value: `${max}p`,
+					name: 'Highest prices',
+					value: `${prices[prices.length - 1]}p\n${prices[prices.length - 2]}p\n${prices[prices.length - 3]}p`,
 					inline: true
 				}
 			]
