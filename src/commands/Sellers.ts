@@ -3,7 +3,6 @@ import { Bot, Command } from 'yamdbf';
 import { User, Message, Collection } from 'discord.js';
 import { Listing, Item } from '../lib/ItemLoader';
 import WfBot from '../lib/WfBot';
-import * as columnify from 'columnify';
 
 export default class Sellers extends Command
 {
@@ -32,24 +31,32 @@ export default class Sellers extends Command
 		const sortedListings: Listing[] = listings.array().sort((a, b) => a.price - b.price);
 		sortedListings.length = quantity;
 
-		const output: any[] = sortedListings.map((a: Listing) =>
-		{
-			return {
-				'Ingame Name': a.user,
-				'Price': `${a.price}p`,
-				'Quanitity': a.count
-			};
-		});
-
-		const columns: string = columnify(output,
-		{
-			columnSplitter: ' | ',
-			maxWidth: 20
-		});
-
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
-		const titleString: string = `online sellers for [${item.name}] ${(item.type === 'Mod') ? 'rank 0' : ''}`;
-		outMessage.editCode('ini',
-			`${titleString}\n${'-'.repeat(Math.max(31, titleString.length))}\n${columns}`);
+		const embed: any = {
+			color: 8450847,
+			author: {
+				name: `Online sellers for [${item.name}]`,
+				icon_url: 'http://i.imgur.com/lh5YKoc.png'
+			},
+			fields: [
+				{
+					name: 'Ingame name',
+					value: sortedListings.map(a => a.user).join('\n'),
+					inline: true
+				},
+				{
+					name: 'Price',
+					value: sortedListings.map(a => `${a.price}p`).join('\n'),
+					inline: true
+				},
+				{
+					name: 'Quantity',
+					value: sortedListings.map(a => a.count).join('\n'),
+					inline: true
+				}
+			]
+		};
+
+		return outMessage.edit('', { embed: embed });
 	}
 }

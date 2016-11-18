@@ -33,9 +33,31 @@ export default class PriceCheck extends Command
 		const max: number = prices.reduce((a, b) => Math.max(a, b));
 		const min: number = prices.reduce((a, b) => Math.min(a, b));
 
-		return outMessage.editCode('ini', ``
-			+ `Average price for [${item.name}] is ${average.toFixed(2)}p.\n`
-			+ `Lowest price is ${min}p.\n`
-			+ `Highest price is ${max}p.`);
+		const embed: any = {
+			color: 8450847,
+			author: {
+				name: `Price check for [${item.name}]`,
+				icon_url: 'http://i.imgur.com/lh5YKoc.png'
+			},
+			fields: [
+				{
+					name: 'Average price',
+					value: `${average.toFixed(2)}p`,
+					inline: true
+				},
+				{
+					name: 'Lowest price',
+					value: `${min}p`,
+					inline: true
+				},
+				{
+					name: 'Highest price',
+					value: `${max}p`,
+					inline: true
+				}
+			]
+		};
+
+		return outMessage.edit('', { embed: embed });
 	}
 }
