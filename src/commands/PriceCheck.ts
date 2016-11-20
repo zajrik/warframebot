@@ -1,7 +1,7 @@
 'use strict';
 import { Bot, Command } from 'yamdbf';
 import { User, Message, Collection } from 'discord.js';
-import { Listing, Item } from '../lib/ItemLoader';
+import { AllListings, Item } from '../lib/ItemLoader';
 import WfBot from '../lib/WfBot';
 
 export default class PriceCheck extends Command
@@ -22,16 +22,18 @@ export default class PriceCheck extends Command
 	{
 		const outMessage: Message = <Message> await message.channel.sendMessage('_Checking Warframe.market..._');
 		const name: string = args.join(' ');
-		const listings: Collection<string, Listing> = await (<WfBot> this.bot).itemLoader.getSellers(name);
+		const listings: AllListings = await (<WfBot> this.bot).itemLoader.getListings(name);
 
-		if ((<any> listings.first()).error)
-			return outMessage.edit((<any> listings.first()).error);
+		if ((<any> listings.buyers.first()).error)
+			return outMessage.edit((<any> listings.buyers.first()).error);
+
+		if ((<any> listings.sellers.first()).error)
+			return outMessage.edit((<any> listings.sellers.first()).error);
 
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
-		const prices: number[] = listings.map(a => a.price).sort((a, b) => a - b);
-		const average: number = prices.reduce((a, b) => a + b) / listings.size;
-		const max: number = prices.reduce((a, b) => Math.max(a, b));
-		const min: number = prices.reduce((a, b) => Math.min(a, b));
+		const sellPrices: number[] = listings.sellers.map(a => a.price).sort((a, b) => a - b);
+		const buyPrices: number[] = listings.buyers.map(a => a.price).sort((a, b) => b - a);
+		const average: number = sellPrices.reduce((a, b) => a + b) / listings.sellers.size;
 
 		const embed: any = {
 			color: 8450847,
@@ -46,13 +48,13 @@ export default class PriceCheck extends Command
 					inline: true
 				},
 				{
-					name: 'Lowest prices',
-					value: `${prices[0]}p\n${prices[1]}p\n${prices[2]}p`,
+					name: 'Lowest sell prices',
+					value: sellPrices.slice(0, 3).map(a => `${a}p`).join('\n'),
 					inline: true
 				},
 				{
-					name: 'Highest prices',
-					value: `${prices[prices.length - 1]}p\n${prices[prices.length - 2]}p\n${prices[prices.length - 3]}p`,
+					name: 'Highest buy prices',
+					value: buyPrices.slice(0, 3).map(a => `${a}p`).join('\n'),
 					inline: true
 				}
 			]

@@ -23,6 +23,11 @@ export type Listing = {
 	price: number;
 }
 
+export type AllListings = {
+	buyers: Collection<string, Listing>;
+	sellers: Collection<string, Listing>;
+}
+
 export default class ItemLoader
 {
 	public allItems: Collection<string, Item>;
@@ -145,5 +150,16 @@ export default class ItemLoader
 	public async getBuyers(name: string): Promise<Collection<string, Listing>>
 	{
 		return await this._getListings(name, 'buy');
+	}
+
+	/** 
+	 * Get all online in-game buyers and sellers for an item
+	 */
+	public async getListings(name: string): Promise<AllListings>
+	{
+		return {
+			buyers: await this._getListings(name, 'buy'),
+			sellers: await this._getListings(name, 'sell')
+		};
 	}
 }
