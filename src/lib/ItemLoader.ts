@@ -106,6 +106,7 @@ export default class ItemLoader
 		for (let listing of listingsData)
 		{
 			if (!listing['online_ingame'] || /\((?:PS4|XB1)\)/.test(listing['ingame_name'])) continue;
+			if (item.type === 'Mod' && (listing['mod_rank'] && listing['mod_rank'] > 0)) continue;
 			let buildListing: Listing = {
 				user: listing['ingame_name'],
 				count: listing['count'],

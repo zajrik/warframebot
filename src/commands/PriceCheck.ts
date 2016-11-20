@@ -1,6 +1,6 @@
 'use strict';
 import { Bot, Command } from 'yamdbf';
-import { User, Message, Collection } from 'discord.js';
+import { User, Message } from 'discord.js';
 import { AllListings, Item } from '../lib/ItemLoader';
 import WfBot from '../lib/WfBot';
 
@@ -31,19 +31,26 @@ export default class PriceCheck extends Command
 			return outMessage.edit((<any> listings.sellers.first()).error);
 
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
-		const sellPrices: number[] = listings.sellers.map(a => a.price).sort((a, b) => a - b);
-		const buyPrices: number[] = listings.buyers.map(a => a.price).sort((a, b) => b - a);
-		const average: number = sellPrices.reduce((a, b) => a + b) / listings.sellers.size;
+		const sellPrices: number[] = listings.sellers
+			.map(a => a.price)
+			.sort((a, b) => a - b)
+			.filter((a, i, self) => self.indexOf(a) === i);
+		const buyPrices: number[] = listings.buyers
+			.map(a => a.price)
+			.sort((a, b) => b - a)
+			.filter((a, i, self) => self.indexOf(a) === i);
+		const allSellPrices: number[] = listings.sellers.map(a => a.price);
+		const average: number = allSellPrices.reduce((a, b) => a + b) / listings.sellers.size;
 
 		const embed: any = {
 			color: 8450847,
 			author: {
-				name: `Price check for [${item.name}]`,
+				name: `Price check for [${item.name}]${item.type === 'Mod' ? ' rank 0' : ''}`,
 				icon_url: 'http://i.imgur.com/lh5YKoc.png'
 			},
 			fields: [
 				{
-					name: 'Average price',
+					name: 'Average sell price',
 					value: `${average.toFixed(2)}p`,
 					inline: true
 				},
