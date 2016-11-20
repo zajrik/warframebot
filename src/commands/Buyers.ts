@@ -28,14 +28,14 @@ export default class Buyers extends Command
 		if ((<any> listings.first()).error)
 			return outMessage.edit((<any> listings.first()).error);
 
-		const sortedListings: Listing[] = listings.array().sort((a, b) => a.price - b.price);
+		const sortedListings: Listing[] = listings.array().sort((a, b) => b.price - a.price);
 		sortedListings.length = quantity;
 
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
 		const embed: any = {
 			color: 8450847,
 			author: {
-				name: `Online buyers for [${item.name}]`,
+				name: `Online buyers for [${item.name}]${item.type === 'Mod' ? ' rank 0' : ''}`,
 				icon_url: 'http://i.imgur.com/lh5YKoc.png'
 			},
 			fields: [

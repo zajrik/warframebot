@@ -35,7 +35,7 @@ export default class Sellers extends Command
 		const embed: any = {
 			color: 8450847,
 			author: {
-				name: `Online sellers for [${item.name}]`,
+				name: `Online sellers for [${item.name}]${item.type === 'Mod' ? ' rank 0' : ''}`,
 				icon_url: 'http://i.imgur.com/lh5YKoc.png'
 			},
 			fields: [
