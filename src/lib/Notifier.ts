@@ -54,7 +54,7 @@ export type SavableUser = {
 }
 
 /**
- * Class to handle the storage and notification of users
+ * Handles the storage and notification of users
  * subsribed to Warframe alert/invasion reward notifications
  */
 export default class Notifier

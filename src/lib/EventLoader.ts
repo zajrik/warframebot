@@ -46,6 +46,9 @@ export type Invasion = {
 	desc?: string;
 }
 
+/**
+ * Handles loading and storing Warframe alerts and invasions
+ */
 export default class EventLoader
 {
 	public alerts: Collection<string, Alert>;
@@ -125,7 +128,11 @@ export default class EventLoader
 			return console.error('Failed to fetch invasions.');
 		}
 
-		const invasions: string[][] = data.split('\n').filter(a => a.includes('|')).map(a => a.split('|'));
+		const invasions: string[][] = data
+			.split('\n')
+			.filter(a => a.includes('|'))
+			.map(a => a.split('|'));
+
 		const fetchedInvasions: Collection<string, Invasion> = new Collection<string, Invasion>();
 		for (let invasion of invasions)
 		{

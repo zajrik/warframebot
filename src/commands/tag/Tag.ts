@@ -20,7 +20,6 @@ export default class Tag extends Command
 	public action(message: Message, args: Array<string | number>, mentions: User[], original: string): any
 	{
 		const action: string = <string> args[0];
-		message.delete();
 		if (!this.bot.storage.exists('tags')) this.bot.storage.setItem('tags', {});
 		switch (action)
 		{

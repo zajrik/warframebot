@@ -29,6 +29,6 @@ export default class List extends Command
 		return message.channel.sendMessage(
 			`You are currently subscribed to the following keywords:\n\n\``
 			+ `${keywords.join('`, `')}\`\n\n`
-			+ `To unsubscribe to a keyword, use \`${prefix}unsub <keyword>\``);
+			+ `To unsubscribe from a keyword, use \`${prefix}unsub <keyword>\``);
 	}
 }

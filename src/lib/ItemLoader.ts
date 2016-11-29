@@ -23,11 +23,18 @@ export type Listing = {
 	price: number;
 }
 
+/**
+ * Contains listings for both sellers and buyers of an item
+ */
 export type AllListings = {
 	buyers: Collection<string, Listing>;
 	sellers: Collection<string, Listing>;
 }
 
+/**
+ * Handles loading and storage of Warframe.market items and
+ * market buy/sell listings for those items
+ */
 export default class ItemLoader
 {
 	public allItems: Collection<string, Item>;
