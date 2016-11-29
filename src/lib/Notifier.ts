@@ -155,7 +155,7 @@ export default class Notifier
 	 * of that event already, and notify the user of any
 	 * resulting applicable events.
 	 */
-	public async checkEvents(): Promise<any>
+	public async checkEvents(): Promise<void>
 	{
 		for (let user of this.users.array())
 		{
@@ -178,7 +178,7 @@ export default class Notifier
 	 * Check the received notification expiry times for all
 	 * users and remove expired notifications
 	 */
-	public async checkExpired(): Promise<any>
+	public async checkExpired(): Promise<void>
 	{
 		for (let user of this.users.values())
 		{

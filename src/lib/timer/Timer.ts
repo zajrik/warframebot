@@ -11,13 +11,13 @@ export default class Timer
 	private _bot: Bot;
 	private _interval: number;
 	/** Must be async */
-	private _callback: () => Promise<any>;
+	private _callback: () => Promise<void>;
 	private _storage: LocalStorage;
 	private _ticks: number;
 	private _timer: NodeJS.Timer;
 	public name: string;
 
-	public constructor(bot: Bot, name: string, interval: number, callback: () => Promise<any>)
+	public constructor(bot: Bot, name: string, interval: number, callback: () => Promise<void>)
 	{
 		this.name = name;
 		this._storage = new LocalStorage(`storage/timers/${this.name}`);

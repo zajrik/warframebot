@@ -48,7 +48,7 @@ export default class ItemLoader
 	/**
 	 * Fetch all items and add them to the allItems collection
 	 */
-	private async _loadItems(): Promise<any>
+	private async _loadItems(): Promise<void>
 	{
 		let items: any;
 		try
@@ -131,7 +131,7 @@ export default class ItemLoader
 	/**
 	 * Re-fetch all items from warframe.market
 	 */
-	public async reloadItems(): Promise<any>
+	public async reloadItems(): Promise<void>
 	{
 		await this._loadItems().then(() => console.log('Items successfully reloaded.')).catch(console.error);
 	}

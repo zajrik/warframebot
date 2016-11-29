@@ -66,7 +66,7 @@ export default class EventLoader
 	/**
 	 * Fetch all alerts and add them to the alerts collection
 	 */
-	private async _loadAlerts(): Promise<any>
+	private async _loadAlerts(): Promise<void>
 	{
 		let data: string;
 		try
@@ -116,7 +116,7 @@ export default class EventLoader
 	/**
 	 * Fetch all invasions and add them to the invasions collection
 	 */
-	private async _loadInvasions(): Promise<any>
+	private async _loadInvasions(): Promise<void>
 	{
 		let data: string;
 		try
@@ -181,7 +181,7 @@ export default class EventLoader
 	/**
 	 * Fetch all invasions and alerts
 	 */
-	public async loadEvents(): Promise<any>
+	public async loadEvents(): Promise<void>
 	{
 		await Promise.all([this._loadAlerts(), this._loadInvasions()]).catch(console.error);
 	}
