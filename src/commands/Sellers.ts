@@ -25,8 +25,8 @@ export default class Sellers extends Command
 		const name: string = args.join(' ');
 		const listings: Collection<string, Listing> = await (<WfBot> this.bot).itemLoader.getSellers(name);
 
-		if ((<any> listings.first()).error)
-			return outMessage.edit((<any> listings.first()).error);
+		if (listings.has('error'))
+			return outMessage.edit((<any> listings.get('error')).error);
 
 		const sortedListings: Listing[] = listings.array().sort((a, b) => a.price - b.price);
 		sortedListings.length = quantity;

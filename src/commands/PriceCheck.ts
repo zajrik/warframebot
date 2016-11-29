@@ -24,15 +24,15 @@ export default class PriceCheck extends Command
 		const name: string = args.join(' ');
 		const listings: AllListings = await (<WfBot> this.bot).itemLoader.getListings(name);
 
-		if ((<any> listings.sellers.first()).error)
+		if (listings.sellers.has('error'))
 		{
-			if ((<any> listings.sellers.first()).code === 2)
+			if ((<any> listings.sellers.get('error')).code === 2)
 				return outMessage.edit('There were no online sellers to generate an average from.');
 			else
 				return outMessage.edit((<any> listings.sellers.first()).error);
 		}
 
-		if ((<any> listings.buyers.first()).error)
+		if (listings.buyers.has('error'))
 			listings.buyers = new Collection<string, Listing>();
 
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
