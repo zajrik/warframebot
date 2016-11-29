@@ -1,7 +1,7 @@
 'use strict';
 import { Bot, Command } from 'yamdbf';
-import { User, Message } from 'discord.js';
-import { AllListings, Item } from '../lib/ItemLoader';
+import { User, Message, Collection } from 'discord.js';
+import { AllListings, Item, Listing } from '../lib/ItemLoader';
 import WfBot from '../lib/WfBot';
 
 export default class PriceCheck extends Command
@@ -24,11 +24,16 @@ export default class PriceCheck extends Command
 		const name: string = args.join(' ');
 		const listings: AllListings = await (<WfBot> this.bot).itemLoader.getListings(name);
 
-		if ((<any> listings.buyers.first()).error)
-			return outMessage.edit((<any> listings.buyers.first()).error);
-
 		if ((<any> listings.sellers.first()).error)
-			return outMessage.edit((<any> listings.sellers.first()).error);
+		{
+			if ((<any> listings.sellers.first()).code === 2)
+				return outMessage.edit('There were no online sellers to generate an average from.');
+			else
+				return outMessage.edit((<any> listings.sellers.first()).error);
+		}
+
+		if ((<any> listings.buyers.first()).error)
+			listings.buyers = new Collection<string, Listing>();
 
 		const item: Item = (<WfBot> this.bot).itemLoader.getItem(name);
 		const sellPrices: number[] = listings.sellers
@@ -61,7 +66,7 @@ export default class PriceCheck extends Command
 				},
 				{
 					name: 'Highest buy prices',
-					value: buyPrices.slice(0, 3).map(a => `${a}p`).join('\n'),
+					value: buyPrices.slice(0, 3).map(a => `${a}p`).join('\n') || 'none',
 					inline: true
 				}
 			]

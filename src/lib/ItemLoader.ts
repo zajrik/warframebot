@@ -93,7 +93,7 @@ export default class ItemLoader
 
 		if (!item)
 		{
-			listings.set('error', <any> { error: `Could not find item '${name}'.` });
+			listings.set('error', <any> { error: `Could not find item '${name}'.`, code: 0 });
 			return listings;
 		}
 
@@ -106,7 +106,7 @@ export default class ItemLoader
 		}
 		catch (err)
 		{
-			listings.set('error', <any> { error: `There was an error connecting to Warframe.market.` });
+			listings.set('error', <any> { error: `There was an error connecting to Warframe.market.`, code: 1 });
 			return listings;
 		}
 
@@ -124,7 +124,7 @@ export default class ItemLoader
 		}
 
 		if (!listings.first()) listings.set('error',
-			<any> { error: 'Your search returned no online results.\nConsider checking Warframe.market directly.' });
+			<any> { error: 'Your search returned no online results.\nConsider checking Warframe.market directly.', code: 2 });
 		return listings;
 	}
 
@@ -137,7 +137,7 @@ export default class ItemLoader
 	}
 
 	/**
-	 * Get an item by name from this.allItems
+	 * Get an item by name
 	 */
 	public getItem(name: string): Item
 	{
