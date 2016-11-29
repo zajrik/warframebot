@@ -20,10 +20,7 @@ type int = number;
  */
 export default class Time extends Date
 {
-	public constructor()
-	{
-		super();
-	}
+	public constructor() { super(); }
 
 	/**
 	 * Return an object containing the time difference between a and b
