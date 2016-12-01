@@ -28,7 +28,7 @@ export default class Alerts extends Command
 			return {
 				mission: `${alert.node} (${alert.region})`,
 					type: alert.mission + alert.desc,
-					expires: expiry,
+					expires: expiry.includes('-') ? 'EXPIRED' : expiry,
 					credits: alert.rewards.credits,
 					reward: alert.rewards.item
 			};
