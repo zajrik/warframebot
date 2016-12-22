@@ -9,10 +9,11 @@
   },
   "dependencies": {
     "columnify": "^1.5.4",
+    "discord.js": "github:hydrabolt/discord.js#indev",
     "moment": "^2.15.2",
     "request": "^2.78.0",
     "request-promise": "^4.1.1",
-    "yamdbf": "^2.5.0"
+    "yamdbf": "^2.5.7"
   },
   "devDependencies": {
     "@types/node": "^6.0.46",
